@@ -21,6 +21,17 @@ class Diggynomial():
         for i in range(len(selfy.coefficients)):
             selfy.coefficients[i] += poly.coefficients[i]
         return selfy
+    '''untested multiplication'''
+    def __mult__(self, poly)
+        selfy,poly = Diggynomial(self.coefficients, self.zero_coefficient).format_with(Diggynomial(poly.coefficients, poly.zero_coefficient))
+        
+        # iterate over each pair
+        for i in range(len(selfy.coefficients):
+            for j in range(len(selfy.coefficients):
+                selfy.extend((i-selfy.zero_coefficient)+(j-poly.zero_coefficient)-len(selfy.coefficients)
+                selfy[(i-selfy.zero_coefficient)+(j-poly.zero_coefficient)]+=selfy.coefficients[i]*poly.coefficients[j]
+        return selfy
+                
     def extend(self, times=1, dir=1):
         guh = lambda x: len(self.coefficients) if x == 1 else 0 if x == -1 else None
         for _ in range(times):
@@ -48,3 +59,4 @@ b = Diggynomial([1, 1, 2, 3], 3)
 print((a+b).coefficients)
 print(a.coefficients, a.zero_coefficient)
 print(b.coefficients, b.zero_coefficient)
+
