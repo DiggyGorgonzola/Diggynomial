@@ -18,8 +18,8 @@ class Diggynomial():
             return TypeError(f"\x1B[3m\033[91m\033[1mTypeError\033[0m\033[31m\x1B[3m: Argument x ({x}) is not a float, int, boolean, or Diggynomial\033[0m")
     def __add__(self, poly):
         selfy,poly = Diggynomial(self.coefficients, self.zero_coefficient).format_with(Diggynomial(poly.coefficients, poly.zero_coefficient))
-        for i in selfy.coefficients:
-            selfy.coefficients += poly.coefficients
+        for i in range(len(selfy.coefficients)):
+            selfy.coefficients[i] += poly.coefficients[i]
         return selfy
     def extend(self, times=1, dir=1):
         guh = lambda x: len(self.coefficients) if x == 1 else 0 if x == -1 else None
