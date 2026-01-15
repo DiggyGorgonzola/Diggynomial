@@ -22,15 +22,20 @@ class Diggynomial():
             selfy.coefficients[i] += poly.coefficients[i]
         return selfy
     '''untested multiplication'''
-    def __mult__(self, poly)
+    def __mul__(self, poly):
         selfy,poly = Diggynomial(self.coefficients, self.zero_coefficient).format_with(Diggynomial(poly.coefficients, poly.zero_coefficient))
-        
-        # iterate over each pair
-        for i in range(len(selfy.coefficients):
-            for j in range(len(selfy.coefficients):
-                selfy.extend((i-selfy.zero_coefficient)+(j-poly.zero_coefficient)-len(selfy.coefficients)
-                selfy[(i-selfy.zero_coefficient)+(j-poly.zero_coefficient)]+=selfy.coefficients[i]*poly.coefficients[j]
-        return selfy
+        new_thingy,_ = Diggynomial([1 for _ in range(10)], 0).format_with(selfy)
+        for i in range(len(selfy.coefficients)):
+            for j in range(len(poly.coefficients)):
+                new_thingy.extend(i+j)
+                x=selfy.coefficients[i]
+                y=poly.coefficients[j]
+                new_thingy.coefficients[i+j] += x*y
+                new_thingy.compress()
+        for i in range(len(new_thingy.coefficients)):
+            new_thingy.coefficients[i] -= 1
+        new_thingy.compress()
+        return new_thingy
                 
     def extend(self, times=1, dir=1):
         guh = lambda x: len(self.coefficients) if x == 1 else 0 if x == -1 else None
@@ -41,7 +46,7 @@ class Diggynomial():
     def compress(self):
         while self.coefficients[0] == 0:
             self.coefficients.pop(0)
-            self.zero_coefficient -= 1
+            self.zero_coefficient += 1
         while self.coefficients[-1] == 0:
             self.coefficients.pop(-1)
     def format_with(self, poly):
@@ -55,8 +60,6 @@ class Diggynomial():
             a.extend(dir=1)
         return self,poly
 a = Diggynomial([1, 1, 2, 3])
-b = Diggynomial([1, 1, 2, 3], 3)
-print((a+b).coefficients)
-print(a.coefficients, a.zero_coefficient)
-print(b.coefficients, b.zero_coefficient)
+b = Diggynomial([1, 1, 2, 3])
+print((a*b).coefficients,(a*b).zero_coefficient)
 
