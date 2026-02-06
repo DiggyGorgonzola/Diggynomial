@@ -12,23 +12,19 @@ class Diggynomial():
             return sum([self.coefficients[i]*(x**(i-self.zero_coefficient)) for i in range(len(self.coefficients))])
         elif isinstance(x, Diggynomial):
             a = x
-            a_z = a.zero_coefficient
-
             b = self
-            b_z = b.zero_coefficient
+            c = Diggynomial(coefficients=[0], zero_coefficient=0)
+            for i, coeff in enumerate(b.coefficients):
+                power = i - b.zero_coefficient
+                if coeff == 0:
+                    continue
 
-
-            a,b = a.format_with(b)
-            print(a)
-
-            c = Diggynomial(coefficients=[0, 0, 0, 0])
-            for i in range(len(b.coefficients)):
-                if i != b.zero_coefficient:
-                    c += b.coefficients[i] * (a ** i)
+                if power == 0:
+                    c += coeff
                 else:
-                    c += b.coefficients[i]
+                    c += coeff * (a ** power)
+
             c.compress()
-            c.zero_coefficient = a_z + b_z
             return c
         else:
             return TypeError(f"\033[91m\033[1mTypeError\033[0m\033[31m: Argument x ({x}) is not a float, int, boolean, or Diggynomial\033[0m")
@@ -42,7 +38,6 @@ class Diggynomial():
             selfy = self
             selfy.coefficients[selfy.zero_coefficient] += poly
             return selfy
-    '''untested multiplication'''
     def __mul__(self, poly):
         if isinstance(poly, Diggynomial):
             selfy,poly = Diggynomial(self.coefficients, self.zero_coefficient).format_with(Diggynomial(poly.coefficients, poly.zero_coefficient))
@@ -101,6 +96,6 @@ class Diggynomial():
 '''Testing Zone'''
 
 if __name__ == "__main__":
-    a = Diggynomial(coefficients=[0, 1])
-    print(a(a))
+    a = Diggynomial(coefficients=[2,2])
+    print(a*a)
 
