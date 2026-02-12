@@ -4,6 +4,8 @@ class Diggynomial():
     def __init__(self, coefficients=None, zero_coefficient=None):
         self.coefficients = coefficients if coefficients is not None else [0]
         self.zero_coefficient = zero_coefficient if zero_coefficient is not None else 0
+    def copy(self):
+        return Diggynomial(coefficients=[i for i in self.coefficients], zero_coefficient=self.zero_coefficient)
     def __repr__(self):
         return " + ".join([f"{self.coefficients[i] if ((self.coefficients[i]!=0 and i-self.zero_coefficient==0) or (self.coefficients[i]!=1 and i-self.zero_coefficient!=0)) else ""}{"x" if i-self.zero_coefficient != 0 else ''}{f"{f'**{i-self.zero_coefficient}' if i-self.zero_coefficient not in [0,1] else ''}"}" for i in range(len(self.coefficients))])
     def __call__(self, x):
@@ -11,9 +13,9 @@ class Diggynomial():
             x = float(x)
             return sum([self.coefficients[i]*(x**(i-self.zero_coefficient)) for i in range(len(self.coefficients))])
         elif isinstance(x, Diggynomial):
-            a = x
-            b = self
             c = Diggynomial(coefficients=[0], zero_coefficient=0)
+            b = self.copy()
+            a = x.copy()
             for i, coeff in enumerate(b.coefficients):
                 power = i - b.zero_coefficient
                 if coeff == 0:
@@ -30,17 +32,17 @@ class Diggynomial():
             return TypeError(f"\033[91m\033[1mTypeError\033[0m\033[31m: Argument x ({x}) is not a float, int, boolean, or Diggynomial\033[0m")
     def __add__(self, poly):
         if isinstance(poly, Diggynomial):
-            selfy,poly = Diggynomial(self.coefficients, self.zero_coefficient).format_with(Diggynomial(poly.coefficients, poly.zero_coefficient))
+            selfy,poly = self.copy().format_with(poly.copy())
             for i in range(len(selfy.coefficients)):
                 selfy.coefficients[i] += poly.coefficients[i]
             return selfy
         elif isinstance(poly, int) or isinstance(poly, float):
-            selfy = self
+            selfy = self.copy()
             selfy.coefficients[selfy.zero_coefficient] += poly
             return selfy
     def __mul__(self, poly):
         if isinstance(poly, Diggynomial):
-            selfy,poly = Diggynomial(self.coefficients, self.zero_coefficient).format_with(Diggynomial(poly.coefficients, poly.zero_coefficient))
+            selfy,poly = self.copy().format_with(poly.copy())
             new_thingy,_ = Diggynomial([1 for _ in range(10)], 0).format_with(selfy)
             for i in range(len(selfy.coefficients)):
                 for j in range(len(poly.coefficients)):
@@ -54,17 +56,17 @@ class Diggynomial():
             new_thingy.compress()
             return new_thingy
         elif isinstance(poly, int):
-            selfy = self
+            selfy = self.copy()
             for i in range(len(selfy.coefficients)):
                 selfy.coefficients[i] *= poly
             return selfy.compress()
     def __rmul__(self, poly):
-        return self.__mul__(poly)
+        return self.copy().__mul__(poly)
     def __pow__(self, amt):
-        g = self
-        for i in range(amt - 1):
-            g = g*g
-        return g
+        g = self.copy()
+        for _ in range(amt - 1):
+            g = g.copy()*g.copy()
+        return g.copy()
     def extend(self, times=1, dir=1):
         guh = lambda x: len(self.coefficients) if x == 1 else 0 if x == -1 else None
         for _ in range(times):
@@ -96,6 +98,7 @@ class Diggynomial():
 '''Testing Zone'''
 
 if __name__ == "__main__":
-    a = Diggynomial(coefficients=[2,2])
-    print(a*a)
+    a = Diggynomial(coefficients=[1,3])
+    b = Diggynomial(coefficients=[0,1/2])
+    print(a(b))
 
