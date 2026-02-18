@@ -26,9 +26,11 @@ class Diggynomial2():
         return c.compress()
     def __pow__(self, val):
         s = self.copy()
-        for i in range(val):
+        for i in range(val-1):
             s = s * s
         return s
+
+    # fix this
     def __call__(self, poly):
         if isinstance(poly, Diggynomial2):
             c = Diggynomial2()
@@ -72,6 +74,6 @@ class Diggynomial2():
             p.coeff.append(0)
         return (s,p)
 
-a = Diggynomial2([4], 0)
-b = Diggynomial2([0,2], 0)
-print(a(a))
+a = Diggynomial2([1,3], 0)
+b = Diggynomial2([0,.5], 0)
+print(a(b))
