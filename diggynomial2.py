@@ -1,3 +1,7 @@
+import math, random, time
+
+L = [2,-2,-8,-16,-26,-38,-52,-68,-86,-106,-128]
+
 class Diggynomial2():
     def __init__(self,coefficients=None, zc=None):
         self.coeff = coefficients if isinstance(coefficients, list) else [coefficients] if isinstance(coefficients, (int,float)) else [0]
@@ -20,6 +24,20 @@ class Diggynomial2():
                 d = Diggynomial2(coefficients=q, zc=-(s_pow+p_pow))
                 c += d
         return c.compress()
+    def __pow__(self, val):
+        s = self.copy()
+        for i in range(val):
+            s = s * s
+        return s
+    def __call__(self, poly):
+        if isinstance(poly, Diggynomial2):
+            c = Diggynomial2()
+            s,p = self.copy().format(poly.copy())
+            for x in range(len(s.coeff)):
+                s_pow = x - s.zc
+                q = Diggynomial2(coefficients=[s.coeff[x]]) * (p ** s_pow)
+                c += q
+            return c
     def __repr__(self):
         return f"Diggynomial2(coefficients={self.coeff}, zc={self.zc})"
     
@@ -54,6 +72,6 @@ class Diggynomial2():
             p.coeff.append(0)
         return (s,p)
 
-a = Diggynomial2([1,0,2,3,5], 0)
+a = Diggynomial2([4], 0)
 b = Diggynomial2([0,2], 0)
-print(a*b)
+print(a(a))
