@@ -14,6 +14,9 @@ class Diggynomial2():
         for i in range(1,len(self.coeff)):
             c.coeff[i-1] = self.coeff[i]*(i-self.zc)
         return c.compress()
+    def zeros(self, range=(-1, 1), samples=50):
+        # work on this !!!
+        pass
     def __add__(self, poly):
         s,p = self.format(poly)
         for i in range(len(s.coeff)):
