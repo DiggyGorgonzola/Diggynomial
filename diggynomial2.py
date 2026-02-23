@@ -9,6 +9,11 @@ class Diggynomial2():
         self.zc = zc if zc is not None else 0
     def copy(self):
         return Diggynomial2(coefficients=[i for i in self.coeff], zc=self.zc)
+    def derivate(self):
+        c = Diggynomial2(coefficients=[0 for _ in range(len(self.coeff) + 1)], zc=self.zc)
+        for i in range(1,len(self.coeff)):
+            c.coeff[i-1] = self.coeff[i]*(i-self.zc)
+        return c.compress()
     def __add__(self, poly):
         s,p = self.format(poly)
         for i in range(len(s.coeff)):
@@ -47,6 +52,11 @@ class Diggynomial2():
                 q = Diggynomial2(coefficients=[s.coeff[x]]) * (p ** s_pow)
                 c += q
             return c
+        elif isinstance(poly, (float, int)):
+            sum = 0
+            for i in range(len(self.coeff)):
+                sum += self.coeff[i]*(poly ** i-self.zc)
+            return sum
     def __repr__(self):
         return f"Diggynomial2(coefficients={self.coeff}, zc={self.zc})"
 
@@ -80,5 +90,5 @@ class Diggynomial2():
             p.coeff.append(0)
         return (s,p)
     
-a = Diggynomial2([1,3], 0)
-b = Diggynomial2([0,.5], 0)
+a = Diggynomial2([1,0,0], 0)
+print(a.integrate())
