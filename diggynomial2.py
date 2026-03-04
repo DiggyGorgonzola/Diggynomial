@@ -14,9 +14,13 @@ class Diggynomial2():
         for i in range(1,len(self.coeff)):
             c.coeff[i-1] = self.coeff[i]*(i-self.zc)
         return c.compress()
-    def zeros(self, range=(-1, 1), samples=50):
-        # work on this !!!
-        pass
+    def zeros(self, _range=(-1, 1), samples=50):
+        m = _range[1] - _range[0]
+        guh = []
+        for i in range(samples):
+            if math.copysign(1,self(i/samples*m+_range[0])) != math.copysign(1,self((i+1)/samples*m+_range[0])):
+                guh.append(i/samples*m+_range[0])
+        return guh
     def __add__(self, poly):
         s,p = self.format(poly)
         for i in range(len(s.coeff)):
@@ -93,5 +97,5 @@ class Diggynomial2():
             p.coeff.append(0)
         return (s,p)
     
-a = Diggynomial2([1,0,0], 0)
-print(a.integrate())
+a = Diggynomial2([-1,0,1], 0)
+print(a.zeros(_range=(-2,2),samples=(10000)))
